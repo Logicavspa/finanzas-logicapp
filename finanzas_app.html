@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finanzas — Logic App / LH</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f0f4f8; color: #1a202c; }
+
+  /* NAV */
+  nav { background: #1e3a5f; color: #fff; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  nav h1 { font-size: 17px; font-weight: 700; }
+  nav span { font-size: 12px; opacity: .7; }
+
+  /* TABS */
+  .tabs { display: flex; background: #fff; border-bottom: 2px solid #e2e8f0; overflow-x: auto; }
+  .tab { flex: 1; padding: 12px 8px; text-align: center; font-size: 13px; font-weight: 600; cursor: pointer; color: #718096; white-space: nowrap; border-bottom: 3px solid transparent; transition: .2s; }
+  .tab.active { color: #1e3a5f; border-bottom-color: #1e3a5f; }
+
+  /* CONTENT */
+  .view { display: none; padding: 16px; max-width: 700px; margin: 0 auto; }
+  .view.active { display: block; }
+
+  /* CARDS */
+  .card { background: #fff; border-radius: 12px; padding: 16px; margin-bottom: 14px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  .card h2 { font-size: 15px; font-weight: 700; margin-bottom: 12px; color: #1e3a5f; }
+
+  /* SUMMARY CHIPS */
+  .chips { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .chip { background: #fff; border-radius: 10px; padding: 14px; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  .chip .label { font-size: 11px; color: #718096; margin-bottom: 4px; text-transform: uppercase; letter-spacing: .4px; }
+  .chip .value { font-size: 22px; font-weight: 800; }
+  .chip.green .value { color: #276749; }
+  .chip.red .value { color: #c53030; }
+  .chip.blue .value { color: #2b6cb0; }
+  .chip.orange .value { color: #c05621; }
+
+  /* FORM */
+  label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 4px; color: #4a5568; }
+  select, input { width: 100%; padding: 10px 12px; border: 1.5px solid #e2e8f0; border-radius: 8px; font-size: 14px; margin-bottom: 12px; background: #f7fafc; outline: none; }
+  select:focus, input:focus { border-color: #2b6cb0; background: #fff; }
+  .btn { width: 100%; padding: 13px; background: #1e3a5f; color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; transition: .2s; }
+  .btn:hover { background: #2a4f7c; }
+  .btn.danger { background: #c53030; }
+  .btn.sm { width: auto; padding: 6px 14px; font-size: 12px; border-radius: 6px; }
+  .btn.green { background: #276749; }
+
+  /* LIST */
+  .entry { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f0f4f8; }
+  .entry:last-child { border-bottom: none; }
+  .entry-info .name { font-size: 14px; font-weight: 600; }
+  .entry-info .sub { font-size: 12px; color: #718096; margin-top: 2px; }
+  .entry-amount { font-size: 16px; font-weight: 800; color: #c53030; }
+  .entry-amount.gasto { color: #c05621; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; margin-left: 6px; }
+  .badge.adelanto { background: #ebf8ff; color: #2b6cb0; }
+  .badge.material { background: #fefcbf; color: #744210; }
+  .badge.bencina { background: #fef3c7; color: #92400e; }
+  .badge.ayudante { background: #f0fff4; color: #276749; }
+  .badge.otro { background: #faf5ff; color: #553c9a; }
+
+  /* WORKERS */
+  .worker-card { background: #fff; border-radius: 12px; padding: 16px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,.08); border-left: 5px solid #1e3a5f; }
+  .worker-name { font-size: 16px; font-weight: 700; margin-bottom: 10px; }
+  .worker-row { display: flex; justify-content: space-between; font-size: 13px; padding: 4px 0; }
+  .worker-row .k { color: #718096; }
+  .worker-row .v { font-weight: 700; }
+  .worker-row .v.neg { color: #c53030; }
+  .worker-row .v.pos { color: #276749; }
+  .divider { border: none; border-top: 1px solid #e2e8f0; margin: 8px 0; }
+
+  /* QUINCENA SELECTOR */
+  .period-bar { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+  .period-btn { padding: 6px 14px; border: 1.5px solid #cbd5e0; border-radius: 20px; font-size: 13px; cursor: pointer; background: #fff; }
+  .period-btn.active { background: #1e3a5f; color: #fff; border-color: #1e3a5f; }
+
+  /* MODAL */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 200; align-items: flex-end; justify-content: center; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: #fff; border-radius: 20px 20px 0 0; padding: 20px 16px 30px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; }
+  .modal h3 { font-size: 17px; font-weight: 700; margin-bottom: 16px; color: #1e3a5f; }
+  .modal-close { float: right; cursor: pointer; font-size: 22px; color: #718096; background: none; border: none; }
+
+  /* DELETE btn */
+  .del-btn { background: none; border: none; color: #cbd5e0; cursor: pointer; font-size: 18px; padding: 4px; }
+  .del-btn:hover { color: #c53030; }
+
+  /* empty state */
+  .empty { text-align: center; padding: 30px; color: #a0aec0; font-size: 14px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <h1>💼 Logic App / LH</h1>
+  <span id="nav-period">Cargando...</span>
+</nav>
+
+<div class="tabs">
+  <div class="tab active" onclick="showTab('resumen')">Resumen</div>
+  <div class="tab" onclick="showTab('registrar')">+ Registrar</div>
+  <div class="tab" onclick="showTab('trabajadores')">Trabajadores</div>
+  <div class="tab" onclick="showTab('historial')">Historial</div>
+  <div class="tab" onclick="showTab('config')">Config</div>
+</div>
+
+<!-- RESUMEN -->
+<div class="view active" id="view-resumen">
+  <div class="period-bar" id="period-bar"></div>
+  <div class="chips" id="chips"></div>
+  <div class="card">
+    <h2>Movimientos de esta quincena</h2>
+    <div id="resumen-list"></div>
+  </div>
+</div>
+
+<!-- REGISTRAR -->
+<div class="view" id="view-registrar">
+  <div class="card">
+    <h2>Nuevo movimiento</h2>
+    <label>Trabajador</label>
+    <select id="f-worker"></select>
+    <label>Tipo</label>
+    <select id="f-type">
+      <option value="adelanto">Adelanto de sueldo</option>
+      <option value="material">Material / Insumo</option>
+      <option value="bencina">Bencina</option>
+      <option value="ayudante">Ayudante externo</option>
+      <option value="otro">Otro gasto</option>
+    </select>
+    <label>Descripción (opcional)</label>
+    <input type="text" id="f-desc" placeholder="Ej: Tuberías cobre, ayudante lunes...">
+    <label>Monto ($)</label>
+    <input type="number" id="f-amount" placeholder="0" min="0">
+    <label>Trabajo asociado (opcional)</label>
+    <input type="text" id="f-job" placeholder="Ej: AZA, Escuela Militar...">
+    <label>Fecha</label>
+    <input type="date" id="f-date">
+    <button class="btn" onclick="saveEntry()">Guardar movimiento</button>
+  </div>
+</div>
+
+<!-- TRABAJADORES -->
+<div class="view" id="view-trabajadores">
+  <div id="workers-list"></div>
+</div>
+
+<!-- HISTORIAL -->
+<div class="view" id="view-historial">
+  <div class="card">
+    <h2>Todos los movimientos</h2>
+    <div style="margin-bottom:12px;display:flex;gap:8px;flex-wrap:wrap">
+      <select id="h-worker" onchange="renderHistorial()" style="width:auto;flex:1">
+        <option value="">Todos</option>
+      </select>
+      <select id="h-type" onchange="renderHistorial()" style="width:auto;flex:1">
+        <option value="">Todos los tipos</option>
+        <option value="adelanto">Adelanto</option>
+        <option value="material">Material</option>
+        <option value="bencina">Bencina</option>
+        <option value="ayudante">Ayudante</option>
+        <option value="otro">Otro</option>
+      </select>
+    </div>
+    <div id="historial-list"></div>
+  </div>
+</div>
+
+<!-- CONFIG -->
+<div class="view" id="view-config">
+  <div class="card">
+    <h2>Trabajadores</h2>
+    <div id="config-workers-list"></div>
+    <hr style="margin:12px 0; border-color:#f0f4f8">
+    <label>Nombre del trabajador</label>
+    <input type="text" id="w-name" placeholder="Nombre completo">
+    <label>Sueldo base quincenal ($)</label>
+    <input type="number" id="w-salary" placeholder="0">
+    <button class="btn green" onclick="addWorker()">Agregar trabajador</button>
+  </div>
+  <div class="card" style="margin-top:14px">
+    <h2>Quincenas</h2>
+    <label>Nueva quincena (ej: 1-15 Junio 2026)</label>
+    <input type="text" id="p-name" placeholder="1-15 Junio 2026">
+    <button class="btn green" onclick="addPeriod()">Agregar quincena</button>
+  </div>
+  <div class="card" style="margin-top:14px">
+    <h2>Peligro</h2>
+    <button class="btn danger" onclick="resetAll()">Borrar todos los datos</button>
+  </div>
+</div>
+
+<script>
+// ── STATE ──
+let state = JSON.parse(localStorage.getItem('finanzas_state') || 'null') || {
+  workers: [],
+  periods: [],
+  activePeriod: null,
+  entries: []
+};
+
+function save() { localStorage.setItem('finanzas_state', JSON.stringify(state)); }
+
+// ── INIT ──
+window.onload = () => {
+  document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
+  if (!state.periods.length) {
+    // crear quincena por defecto
+    const p = currentPeriodLabel();
+    state.periods.push(p);
+    state.activePeriod = p;
+    save();
+  }
+  if (!state.activePeriod) state.activePeriod = state.periods[0];
+  renderAll();
+};
+
+function currentPeriodLabel() {
+  const d = new Date();
+  const m = d.toLocaleString('es', {month:'long'});
+  const y = d.getFullYear();
+  const half = d.getDate() <= 15 ? '1-15' : '16-' + new Date(y, d.getMonth()+1, 0).getDate();
+  return `${half} ${m.charAt(0).toUpperCase()+m.slice(1)} ${y}`;
+}
+
+// ── TABS ──
+function showTab(id) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('view-'+id).classList.add('active');
+  event.target.classList.add('active');
+  renderAll();
+}
+
+function renderAll() {
+  renderPeriodBar();
+  renderChips();
+  renderResumenList();
+  renderWorkers();
+  renderHistorial();
+  renderConfigWorkers();
+  populateSelects();
+  document.getElementById('nav-period').textContent = state.activePeriod || '';
+}
+
+// ── PERIODS ──
+function renderPeriodBar() {
+  const bar = document.getElementById('period-bar');
+  bar.innerHTML = state.periods.map(p =>
+    `<button class="period-btn ${p===state.activePeriod?'active':''}" onclick="setPeriod('${p}')">${p}</button>`
+  ).join('');
+}
+
+function setPeriod(p) { state.activePeriod = p; save(); renderAll(); }
+
+function addPeriod() {
+  const n = document.getElementById('p-name').value.trim();
+  if (!n) return alert('Ingresa el nombre de la quincena');
+  if (state.periods.includes(n)) return alert('Ya existe');
+  state.periods.push(n);
+  state.activePeriod = n;
+  document.getElementById('p-name').value = '';
+  save(); renderAll();
+}
+
+// ── CHIPS ──
+function periodEntries() {
+  return state.entries.filter(e => e.period === state.activePeriod);
+}
+
+function renderChips() {
+  const entries = periodEntries();
+  const totalGastos = entries.reduce((s,e) => s+e.amount, 0);
+  const adelantos = entries.filter(e=>e.type==='adelanto').reduce((s,e)=>s+e.amount,0);
+  const materiales = entries.filter(e=>e.type==='material').reduce((s,e)=>s+e.amount,0);
+  const bencinas = entries.filter(e=>e.type==='bencina').reduce((s,e)=>s+e.amount,0);
+
+  document.getElementById('chips').innerHTML = `
+    <div class="chip red"><div class="label">Total gastos</div><div class="value">${fmt(totalGastos)}</div></div>
+    <div class="chip blue"><div class="label">Adelantos</div><div class="value">${fmt(adelantos)}</div></div>
+    <div class="chip orange"><div class="label">Materiales</div><div class="value">${fmt(materiales)}</div></div>
+    <div class="chip orange"><div class="label">Bencinas</div><div class="value">${fmt(bencinas)}</div></div>
+  `;
+}
+
+// ── RESUMEN LIST ──
+function renderResumenList() {
+  const entries = periodEntries().slice().reverse();
+  const el = document.getElementById('resumen-list');
+  if (!entries.length) { el.innerHTML = '<div class="empty">Sin movimientos en esta quincena</div>'; return; }
+  el.innerHTML = entries.map((e,i) => `
+    <div class="entry">
+      <div class="entry-info">
+        <div class="name">${e.worker} <span class="badge ${e.type}">${labelType(e.type)}</span></div>
+        <div class="sub">${e.date}${e.desc?' · '+e.desc:''}${e.job?' · '+e.job:''}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="entry-amount">${fmt(e.amount)}</div>
+        <button class="del-btn" onclick="deleteEntry(${e.id})">×</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── WORKERS ──
+function renderWorkers() {
+  const el = document.getElementById('workers-list');
+  if (!state.workers.length) { el.innerHTML = '<div class="empty card">Agrega trabajadores en Config</div>'; return; }
+  el.innerHTML = state.workers.map(w => {
+    const entries = periodEntries().filter(e => e.worker === w.name);
+    const adelanto = entries.filter(e=>e.type==='adelanto').reduce((s,e)=>s+e.amount,0);
+    const gastos = entries.filter(e=>e.type!=='adelanto').reduce((s,e)=>s+e.amount,0);
+    const descuentos = adelanto; // solo adelantos descuentan del sueldo
+    const apagar = w.salary - descuentos;
+    return `
+    <div class="worker-card">
+      <div class="worker-name">👷 ${w.name}</div>
+      <div class="worker-row"><span class="k">Sueldo base quincena</span><span class="v">${fmt(w.salary)}</span></div>
+      <div class="worker-row"><span class="k">Adelantos</span><span class="v neg">-${fmt(adelanto)}</span></div>
+      <hr class="divider">
+      <div class="worker-row"><span class="k" style="font-weight:700">A pagar</span><span class="v ${apagar>=0?'pos':'neg'}" style="font-size:18px">${fmt(apagar)}</span></div>
+      <hr class="divider">
+      <div class="worker-row"><span class="k">Gastos empresa (no descuentan sueldo)</span><span class="v">${fmt(gastos)}</span></div>
+    </div>`;
+  }).join('');
+}
+
+// ── HISTORIAL ──
+function renderHistorial() {
+  const wf = document.getElementById('h-worker')?.value || '';
+  const tf = document.getElementById('h-type')?.value || '';
+  let entries = [...state.entries].reverse();
+  if (wf) entries = entries.filter(e=>e.worker===wf);
+  if (tf) entries = entries.filter(e=>e.type===tf);
+  const el = document.getElementById('historial-list');
+  if (!entries.length) { el.innerHTML = '<div class="empty">Sin movimientos</div>'; return; }
+  el.innerHTML = entries.map(e => `
+    <div class="entry">
+      <div class="entry-info">
+        <div class="name">${e.worker} <span class="badge ${e.type}">${labelType(e.type)}</span></div>
+        <div class="sub">${e.period} · ${e.date}${e.desc?' · '+e.desc:''}${e.job?' · '+e.job:''}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="entry-amount">${fmt(e.amount)}</div>
+        <button class="del-btn" onclick="deleteEntry(${e.id})">×</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── CONFIG WORKERS ──
+function renderConfigWorkers() {
+  const el = document.getElementById('config-workers-list');
+  if (!state.workers.length) { el.innerHTML = '<div class="empty">Sin trabajadores aún</div>'; return; }
+  el.innerHTML = state.workers.map((w,i) => `
+    <div class="worker-row" style="border-bottom:1px solid #f0f4f8;padding:8px 0">
+      <span class="k" style="font-size:14px">👷 ${w.name} — ${fmt(w.salary)}/quincena</span>
+      <button class="del-btn" onclick="deleteWorker(${i})">×</button>
+    </div>
+  `).join('');
+}
+
+// ── SELECTS ──
+function populateSelects() {
+  const opts = ['<option value="">Todos</option>', ...state.workers.map(w=>`<option value="${w.name}">${w.name}</option>`)].join('');
+  const fw = document.getElementById('f-worker');
+  const hw = document.getElementById('h-worker');
+  if (fw) fw.innerHTML = state.workers.map(w=>`<option value="${w.name}">${w.name}</option>`).join('') || '<option>Agrega trabajadores en Config</option>';
+  if (hw) hw.innerHTML = opts;
+}
+
+// ── ACTIONS ──
+function saveEntry() {
+  const worker = document.getElementById('f-worker').value;
+  const type = document.getElementById('f-type').value;
+  const desc = document.getElementById('f-desc').value.trim();
+  const amount = parseFloat(document.getElementById('f-amount').value);
+  const job = document.getElementById('f-job').value.trim();
+  const date = document.getElementById('f-date').value;
+
+  if (!worker) return alert('Agrega un trabajador en Config primero');
+  if (!amount || amount <= 0) return alert('Ingresa un monto válido');
+  if (!state.activePeriod) return alert('Selecciona una quincena');
+
+  state.entries.push({ id: Date.now(), worker, type, desc, amount, job, date, period: state.activePeriod });
+  document.getElementById('f-amount').value = '';
+  document.getElementById('f-desc').value = '';
+  document.getElementById('f-job').value = '';
+  save();
+  alert('✅ Guardado');
+  renderAll();
+}
+
+function addWorker() {
+  const name = document.getElementById('w-name').value.trim();
+  const salary = parseFloat(document.getElementById('w-salary').value);
+  if (!name) return alert('Ingresa el nombre');
+  if (!salary) return alert('Ingresa el sueldo base');
+  if (state.workers.find(w=>w.name===name)) return alert('Ya existe');
+  state.workers.push({ name, salary });
+  document.getElementById('w-name').value = '';
+  document.getElementById('w-salary').value = '';
+  save(); renderAll();
+}
+
+function deleteWorker(i) {
+  if (!confirm('¿Eliminar trabajador?')) return;
+  state.workers.splice(i,1);
+  save(); renderAll();
+}
+
+function deleteEntry(id) {
+  if (!confirm('¿Eliminar movimiento?')) return;
+  state.entries = state.entries.filter(e=>e.id!==id);
+  save(); renderAll();
+}
+
+function resetAll() {
+  if (!confirm('¿Borrar TODOS los datos? Esto no se puede deshacer.')) return;
+  state = { workers:[], periods:[], activePeriod:null, entries:[] };
+  save(); renderAll();
+}
+
+// ── HELPERS ──
+function fmt(n) { return '$' + Math.round(n).toLocaleString('es-CL'); }
+function labelType(t) {
+  return { adelanto:'Adelanto', material:'Material', bencina:'Bencina', ayudante:'Ayudante', otro:'Otro' }[t] || t;
+}
+</script>
+</body>
+</html>
