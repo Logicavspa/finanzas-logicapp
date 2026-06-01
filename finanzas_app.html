@@ -294,7 +294,7 @@ async function syncNow(){
   if(!scriptUrl){ alert('Configura la URL de Apps Script en Config primero'); return; }
   setSyncBadge('ing','⟳ Sincronizando...');
   try {
-    const r = await fetch(scriptUrl+'?action=load');
+    const r = await fetch(scriptUrl+'?action=load', {redirect:'follow'});
     if(!r.ok) throw new Error('HTTP '+r.status);
     const remote = await r.json();
     if(remote.error) throw new Error(remote.error);
@@ -318,7 +318,7 @@ async function loadFromSheets(){ await syncNow(); }
 async function pushToSheets(){
   if(!scriptUrl) return;
   try {
-    await fetch(scriptUrl, {method:'POST', body:JSON.stringify({action:'save_state', state})});
+    fetch(scriptUrl, {method:'POST', mode:'no-cors', body:JSON.stringify({action:'save_state', state})});
     setSyncBadge('ok','✓ Guardado');
     setTimeout(()=>setSyncBadge('off','⟳ Sync'),2000);
   } catch(e){ setSyncBadge('err','✗ Error'); }
