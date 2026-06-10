@@ -17,35 +17,41 @@ nav span{font-size:12px;opacity:.7}
 .sync-badge.ing{background:#2b6cb0;color:#fff}
 .sync-badge.off{background:rgba(255,255,255,.2);color:#fff}
 .tabs{display:flex;background:#fff;border-bottom:2px solid #e2e8f0;overflow-x:auto}
-.tab{flex:1;padding:11px 6px;text-align:center;font-size:12px;font-weight:600;cursor:pointer;color:#718096;white-space:nowrap;border-bottom:3px solid transparent;transition:.2s}
+.tab{flex:1;padding:11px 6px;text-align:center;font-size:11px;font-weight:600;cursor:pointer;color:#718096;white-space:nowrap;border-bottom:3px solid transparent;transition:.2s;min-width:60px}
 .tab.active{color:#1e3a5f;border-bottom-color:#1e3a5f}
 .view{display:none;padding:14px;max-width:700px;margin:0 auto}
 .view.active{display:block}
 .card{background:#fff;border-radius:12px;padding:14px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
 .card h2{font-size:14px;font-weight:700;margin-bottom:12px;color:#1e3a5f}
 .chips{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.chips4{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
 .chip{background:#fff;border-radius:10px;padding:12px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.08)}
 .chip .lbl{font-size:10px;color:#718096;margin-bottom:3px;text-transform:uppercase;letter-spacing:.4px}
-.chip .val{font-size:20px;font-weight:800}
-.chip.red .val{color:#c53030}.chip.blue .val{color:#2b6cb0}.chip.orange .val{color:#c05621}
+.chip .val{font-size:18px;font-weight:800}
+.chip.red .val{color:#c53030}.chip.blue .val{color:#2b6cb0}.chip.orange .val{color:#c05621}.chip.green .val{color:#276749}.chip.purple .val{color:#553c9a}
 label{display:block;font-size:13px;font-weight:600;margin-bottom:4px;color:#4a5568}
 select,input{width:100%;padding:9px 11px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:14px;margin-bottom:10px;background:#f7fafc;outline:none}
 select:focus,input:focus{border-color:#2b6cb0;background:#fff}
 .btn{width:100%;padding:12px;background:#1e3a5f;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:0}
 .btn:hover{background:#2a4f7c}
-.btn.danger{background:#c53030}.btn.green{background:#276749}.btn.gray{background:#718096}
+.btn.danger{background:#c53030}.btn.green{background:#276749}.btn.gray{background:#718096}.btn.purple{background:#553c9a}
 .btn.sm{width:auto;padding:7px 14px;font-size:12px;border-radius:6px}
 .entry{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #f0f4f8}
 .entry:last-child{border-bottom:none}
 .entry-info .name{font-size:13px;font-weight:600}
 .entry-info .sub{font-size:11px;color:#718096;margin-top:1px}
 .entry-amount{font-size:14px;font-weight:800;color:#c53030}
+.entry-amount.pos{color:#276749}
 .badge{display:inline-block;padding:1px 7px;border-radius:20px;font-size:10px;font-weight:600;margin-left:5px}
 .badge.adelanto{background:#ebf8ff;color:#2b6cb0}
 .badge.material{background:#fefcbf;color:#744210}
 .badge.bencina{background:#fef3c7;color:#92400e}
 .badge.ayudante{background:#f0fff4;color:#276749}
 .badge.otro{background:#faf5ff;color:#553c9a}
+.badge.pagada{background:#f0fff4;color:#276749}
+.badge.pendiente{background:#fff5f5;color:#c53030}
+.badge.venta{background:#ebf8ff;color:#2b6cb0}
+.badge.compra{background:#fefcbf;color:#744210}
 .worker-card{background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,.08);border-left:5px solid #1e3a5f}
 .worker-name{font-size:15px;font-weight:700;margin-bottom:8px}
 .wrow{display:flex;justify-content:space-between;font-size:12px;padding:3px 0}
@@ -71,6 +77,14 @@ hr.div{border:none;border-top:1px solid #e2e8f0;margin:6px 0}
 .job-meta{font-size:11px;color:#718096}
 .job-total{font-size:16px;font-weight:800;color:#c53030}
 .info-box{background:#ebf8ff;border-radius:8px;padding:10px 12px;font-size:12px;color:#2b6cb0;margin-bottom:12px;line-height:1.5}
+.info-box.green{background:#f0fff4;color:#276749}
+.info-box.yellow{background:#fffaf0;color:#744210}
+.margen-bar{height:8px;border-radius:4px;background:#e2e8f0;margin:6px 0;overflow:hidden}
+.margen-fill{height:100%;border-radius:4px;background:#276749;transition:.3s}
+.margen-fill.neg{background:#c53030}
+.factura-card{background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,.08);border-left:5px solid #553c9a}
+.csv-import-area{border:2px dashed #cbd5e0;border-radius:8px;padding:14px;text-align:center;margin-bottom:10px;cursor:pointer;color:#718096;font-size:13px}
+.csv-import-area:hover{border-color:#2b6cb0;color:#2b6cb0}
 </style>
 </head>
 <body>
@@ -85,7 +99,8 @@ hr.div{border:none;border-top:1px solid #e2e8f0;margin:6px 0}
 
 <div class="tabs">
   <div class="tab active" onclick="showTab('resumen',this)">Resumen</div>
-  <div class="tab" onclick="showTab('registrar',this)">+ Registrar</div>
+  <div class="tab" onclick="showTab('registrar',this)">+ Gasto</div>
+  <div class="tab" onclick="showTab('facturas',this)">Facturas</div>
   <div class="tab" onclick="showTab('trabajos',this)">Trabajos</div>
   <div class="tab" onclick="showTab('trabajadores',this)">Nómina</div>
   <div class="tab" onclick="showTab('historial',this)">Historial</div>
@@ -96,6 +111,7 @@ hr.div{border:none;border-top:1px solid #e2e8f0;margin:6px 0}
 <div class="view active" id="view-resumen">
   <div class="period-bar" id="period-bar"></div>
   <div class="chips" id="chips"></div>
+  <div id="margen-resumen"></div>
   <div class="card">
     <h2>Movimientos</h2>
     <div class="filter-bar" id="filter-bar">
@@ -110,10 +126,10 @@ hr.div{border:none;border-top:1px solid #e2e8f0;margin:6px 0}
   </div>
 </div>
 
-<!-- REGISTRAR -->
+<!-- REGISTRAR GASTO -->
 <div class="view" id="view-registrar">
   <div class="card">
-    <h2>Nuevo movimiento</h2>
+    <h2>Nuevo gasto / movimiento</h2>
     <label>Trabajador</label>
     <select id="f-worker"></select>
     <label>Tipo</label>
@@ -133,6 +149,66 @@ hr.div{border:none;border-top:1px solid #e2e8f0;margin:6px 0}
     <label>Fecha</label>
     <input type="date" id="f-date">
     <button class="btn" onclick="saveEntry()">Guardar movimiento</button>
+  </div>
+</div>
+
+<!-- FACTURAS -->
+<div class="view" id="view-facturas">
+  <div class="chips4" id="factura-chips"></div>
+  <div class="card">
+    <h2>📄 Nueva Factura / DTE</h2>
+    <label>Tipo</label>
+    <select id="fac-tipo">
+      <option value="venta">Venta (factura emitida)</option>
+      <option value="compra">Compra (factura recibida)</option>
+    </select>
+    <label>N° Folio</label>
+    <input type="text" id="fac-folio" placeholder="Ej: 1234">
+    <label>Cliente / Proveedor</label>
+    <input type="text" id="fac-cliente" placeholder="Ej: AZA, Escuela Militar...">
+    <label>Monto Neto ($)</label>
+    <input type="number" id="fac-neto" placeholder="0" min="0" oninput="calcIVA()">
+    <label>IVA (19%) — calculado automático</label>
+    <input type="number" id="fac-iva" placeholder="0" readonly style="background:#f0f4f8;color:#718096">
+    <label>Total ($)</label>
+    <input type="number" id="fac-total" placeholder="0" min="0" oninput="document.getElementById('fac-iva').value=''">
+    <label>Fecha emisión</label>
+    <input type="date" id="fac-fecha">
+    <label>Estado</label>
+    <select id="fac-estado">
+      <option value="pendiente">Pendiente de pago</option>
+      <option value="pagada">Pagada / Recibida</option>
+    </select>
+    <label>Trabajo asociado (opcional)</label>
+    <select id="fac-job"><option value="">— Sin trabajo —</option></select>
+    <button class="btn purple" style="margin-top:4px" onclick="addFactura()">Guardar factura</button>
+  </div>
+
+  <div class="card">
+    <h2>📥 Importar desde Defontana</h2>
+    <div class="info-box yellow">Exporta el libro de ventas o compras desde Defontana en formato CSV y súbelo aquí. Las columnas requeridas son: Folio, Razón Social, Fecha, Neto, IVA, Total.</div>
+    <div class="csv-import-area" onclick="document.getElementById('csv-file').click()">
+      📂 Toca para seleccionar archivo CSV de Defontana
+    </div>
+    <input type="file" id="csv-file" accept=".csv,.txt" style="display:none" onchange="importCSV(this)">
+    <div id="csv-preview"></div>
+  </div>
+
+  <div class="card">
+    <h2>Historial de facturas</h2>
+    <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
+      <select id="fac-filter-tipo" onchange="renderFacturas()" style="width:auto;flex:1;margin-bottom:0">
+        <option value="">Todos los tipos</option>
+        <option value="venta">Ventas</option>
+        <option value="compra">Compras</option>
+      </select>
+      <select id="fac-filter-estado" onchange="renderFacturas()" style="width:auto;flex:1;margin-bottom:0">
+        <option value="">Todos los estados</option>
+        <option value="pendiente">Pendientes</option>
+        <option value="pagada">Pagadas</option>
+      </select>
+    </div>
+    <div id="facturas-list"></div>
   </div>
 </div>
 
@@ -179,7 +255,7 @@ hr.div{border:none;border-top:1px solid #e2e8f0;margin:6px 0}
 <div class="view" id="view-config">
   <div class="card">
     <h2>☁️ Conexión Google Sheets</h2>
-    <div class="info-box">Para sincronizar con Google Sheets, pega aquí la URL de tu Apps Script desplegado. Si no tienes una, pide a tu asistente que te ayude a configurarla.</div>
+    <div class="info-box">Para sincronizar con Google Sheets, pega aquí la URL de tu Apps Script desplegado.</div>
     <label>URL Apps Script</label>
     <input type="text" id="script-url" placeholder="https://script.google.com/macros/s/.../exec">
     <div style="display:flex;gap:8px;margin-bottom:12px">
@@ -250,17 +326,48 @@ hr.div{border:none;border-top:1px solid #e2e8f0;margin:6px 0}
   </div>
 </div>
 
+<!-- MODAL EDITAR FACTURA -->
+<div class="overlay" id="edit-fac-overlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeFacModal()">×</button>
+    <h3>Editar factura</h3>
+    <input type="hidden" id="ef-id">
+    <label>Tipo</label>
+    <select id="ef-tipo">
+      <option value="venta">Venta (factura emitida)</option>
+      <option value="compra">Compra (factura recibida)</option>
+    </select>
+    <label>N° Folio</label><input type="text" id="ef-folio">
+    <label>Cliente / Proveedor</label><input type="text" id="ef-cliente">
+    <label>Monto Neto ($)</label><input type="number" id="ef-neto" min="0">
+    <label>IVA ($)</label><input type="number" id="ef-iva" min="0">
+    <label>Total ($)</label><input type="number" id="ef-total" min="0">
+    <label>Fecha</label><input type="date" id="ef-fecha">
+    <label>Estado</label>
+    <select id="ef-estado">
+      <option value="pendiente">Pendiente</option>
+      <option value="pagada">Pagada</option>
+    </select>
+    <label>Trabajo asociado</label><select id="ef-job"><option value="">— Sin trabajo —</option></select>
+    <button class="btn purple" onclick="saveFacEdit()" style="margin-top:4px">Guardar cambios</button>
+    <button class="btn gray" onclick="closeFacModal()" style="margin-top:8px">Cancelar</button>
+  </div>
+</div>
+
 <script>
-let state = JSON.parse(localStorage.getItem('finanzas_v3')||'null') || {workers:[],periods:[],activePeriod:null,entries:[],jobs:[]};
+let state = JSON.parse(localStorage.getItem('finanzas_v3')||'null') || {workers:[],periods:[],activePeriod:null,entries:[],jobs:[],facturas:[]};
+if(!state.facturas) state.facturas = []; // migración
 let scriptUrl = localStorage.getItem('finanzas_script_url')||'';
 let activeFilter = '';
 
 function save(){ localStorage.setItem('finanzas_v3', JSON.stringify(state)); }
 function today(){ return new Date().toISOString().split('T')[0]; }
+function sameId(a,b){ return String(a)===String(b); } // comparación robusta sin importar tipo
 
 window.onload = async () => {
   document.getElementById('f-date').value = today();
   document.getElementById('j-date').value = today();
+  document.getElementById('fac-fecha').value = today();
   if(document.getElementById('script-url')) document.getElementById('script-url').value = scriptUrl;
   if(!state.periods.length){
     const p = periodLabel();
@@ -299,11 +406,24 @@ async function syncNow(){
     const remote = await r.json();
     if(remote.error) throw new Error(remote.error);
     // merge: remote wins (cloud is source of truth)
-    if(remote.entries) state.entries = remote.entries.map(e=>({...e, amount:Number(e.amount), id:Number(e.id)}));
+    if(remote.entries) state.entries = remote.entries.map(e=>({
+      ...e,
+      amount: Number(e.amount),
+      id: Number(e.id),
+      jobId: e.jobId ? Number(e.jobId) : null  // ← fix: normalizar a número
+    }));
     if(remote.workers) state.workers = remote.workers.map(w=>({...w, salary:Number(w.salary)}));
     if(remote.periods) state.periods = remote.periods;
     if(remote.activePeriod) state.activePeriod = remote.activePeriod;
     if(remote.jobs) state.jobs = remote.jobs.map(j=>({...j, id:Number(j.id)}));
+    if(remote.facturas) state.facturas = remote.facturas.map(f=>({
+      ...f,
+      neto: Number(f.neto||0),
+      iva: Number(f.iva||0),
+      total: Number(f.total||0),
+      id: Number(f.id),
+      jobId: f.jobId ? Number(f.jobId) : null
+    }));
     save(); renderAll();
     setSyncBadge('ok','✓ Sincronizado');
     document.getElementById('sync-status').textContent = 'Última sync: '+new Date().toLocaleTimeString('es');
@@ -335,9 +455,10 @@ function showTab(id,el){
 }
 
 function renderAll(){
-  renderPeriodBar(); renderChips(); renderResumenList();
+  renderPeriodBar(); renderChips(); renderResumenList(); renderMargenResumen();
   renderWorkers(); renderHistorial(); renderConfigWorkers();
-  renderConfigPeriods(); renderJobs(); populateSelects();
+  renderConfigPeriods(); renderJobs(); renderFacturas(); renderFacturaChips();
+  populateSelects();
   document.getElementById('nav-period').textContent = state.activePeriod||'';
 }
 
@@ -363,7 +484,7 @@ function renderConfigPeriods(){
   el.innerHTML=state.periods.map(p=>`
     <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #f0f4f8">
       <span style="font-size:13px">${p}${p===state.activePeriod?' <span style="font-size:10px;color:#2b6cb0">(activa)</span>':''}</span>
-      <button class="icon-btn del" onclick="deletePeriod('${p}')">×</button>
+      <button class="icon-btn del" onclick="deletePeriod('${p.replace(/'/g,"\\'")}')">×</button>
     </div>`).join('');
 }
 
@@ -388,6 +509,27 @@ function renderChips(){
     <div class="chip blue"><div class="lbl">Adelantos</div><div class="val">${fmt(adel)}</div></div>
     <div class="chip orange"><div class="lbl">Materiales</div><div class="val">${fmt(mat)}</div></div>
     <div class="chip orange"><div class="lbl">Bencinas</div><div class="val">${fmt(ben)}</div></div>`;
+}
+
+function renderMargenResumen(){
+  const gastos = periodEntries().reduce((s,x)=>s+x.amount,0);
+  const ventas = state.facturas.filter(f=>f.tipo==='venta').reduce((s,f)=>s+(f.total||f.neto*1.19||0),0);
+  if(!ventas && !gastos){ document.getElementById('margen-resumen').innerHTML=''; return; }
+  const margen = ventas - gastos;
+  const pct = ventas>0 ? Math.min(100, Math.round((gastos/ventas)*100)) : 100;
+  const color = margen>=0 ? 'green' : 'red';
+  document.getElementById('margen-resumen').innerHTML=`
+    <div class="card" style="margin-bottom:12px">
+      <h2>📊 Margen (facturación total vs gastos)</h2>
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+        <span style="color:#276749">Facturado: ${fmt(ventas)}</span>
+        <span style="color:#c53030">Gastos: ${fmt(gastos)}</span>
+      </div>
+      <div class="margen-bar"><div class="margen-fill ${margen<0?'neg':''}" style="width:${pct}%"></div></div>
+      <div style="text-align:center;font-size:14px;font-weight:800;color:${margen>=0?'#276749':'#c53030'};margin-top:6px">
+        ${margen>=0?'Margen':'Déficit'}: ${fmt(Math.abs(margen))} ${ventas>0?'('+Math.round((margen/ventas)*100)+'%)':''}
+      </div>
+    </div>`;
 }
 
 function setFilter(f,btn){
@@ -415,6 +557,214 @@ function renderResumenList(){
     </div>`).join('');
 }
 
+// ── FACTURAS ──
+function calcIVA(){
+  const neto = parseFloat(document.getElementById('fac-neto').value)||0;
+  const iva = Math.round(neto*0.19);
+  document.getElementById('fac-iva').value = iva||'';
+  document.getElementById('fac-total').value = neto ? (neto+iva) : '';
+}
+
+function addFactura(){
+  const tipo = document.getElementById('fac-tipo').value;
+  const folio = document.getElementById('fac-folio').value.trim();
+  const cliente = document.getElementById('fac-cliente').value.trim();
+  const neto = parseFloat(document.getElementById('fac-neto').value)||0;
+  const iva = parseFloat(document.getElementById('fac-iva').value)||Math.round(neto*0.19);
+  const total = parseFloat(document.getElementById('fac-total').value)||(neto+iva);
+  const fecha = document.getElementById('fac-fecha').value;
+  const estado = document.getElementById('fac-estado').value;
+  const jobId = document.getElementById('fac-job').value;
+  if(!cliente) return alert('Ingresa el cliente/proveedor');
+  if(!total) return alert('Ingresa el monto');
+  const job = state.jobs.find(j=>sameId(j.id, jobId));
+  state.facturas.push({id:Date.now(), tipo, folio, cliente, neto, iva, total, fecha, estado, jobId:job?job.id:null, jobName:job?job.name:''});
+  document.getElementById('fac-folio').value='';
+  document.getElementById('fac-cliente').value='';
+  document.getElementById('fac-neto').value='';
+  document.getElementById('fac-iva').value='';
+  document.getElementById('fac-total').value='';
+  save(); pushToSheets(); alert('✅ Factura guardada'); renderAll();
+}
+
+function renderFacturaChips(){
+  const ventas = state.facturas.filter(f=>f.tipo==='venta');
+  const compras = state.facturas.filter(f=>f.tipo==='compra');
+  const totalVentas = ventas.reduce((s,f)=>s+(f.total||0),0);
+  const pendientes = ventas.filter(f=>f.estado==='pendiente').reduce((s,f)=>s+(f.total||0),0);
+  const totalCompras = compras.reduce((s,f)=>s+(f.total||0),0);
+  const margen = totalVentas - totalCompras;
+  const el = document.getElementById('factura-chips');
+  if(!el) return;
+  el.innerHTML=`
+    <div class="chip blue"><div class="lbl">Total facturado</div><div class="val">${fmt(totalVentas)}</div></div>
+    <div class="chip red"><div class="lbl">Por cobrar</div><div class="val">${fmt(pendientes)}</div></div>
+    <div class="chip orange"><div class="lbl">Compras/gastos</div><div class="val">${fmt(totalCompras)}</div></div>
+    <div class="chip ${margen>=0?'green':'red'}"><div class="lbl">Margen bruto</div><div class="val">${fmt(Math.abs(margen))}</div></div>`;
+}
+
+function renderFacturas(){
+  const tipoF = document.getElementById('fac-filter-tipo')?.value||'';
+  const estadoF = document.getElementById('fac-filter-estado')?.value||'';
+  let list = [...state.facturas].reverse();
+  if(tipoF) list=list.filter(f=>f.tipo===tipoF);
+  if(estadoF) list=list.filter(f=>f.estado===estadoF);
+  const el=document.getElementById('facturas-list');
+  if(!el) return;
+  if(!list.length){ el.innerHTML='<div class="empty">Sin facturas registradas</div>'; return; }
+  el.innerHTML=list.map(f=>`
+    <div class="entry">
+      <div class="entry-info">
+        <div class="name">${f.cliente}
+          <span class="badge ${f.tipo}">${f.tipo==='venta'?'Venta':'Compra'}</span>
+          <span class="badge ${f.estado}">${f.estado==='pagada'?'✓ Pagada':'⏳ Pendiente'}</span>
+        </div>
+        <div class="sub">${f.fecha}${f.folio?' · Folio '+f.folio:''}${f.jobName?' · '+f.jobName:''}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <div class="entry-amount ${f.tipo==='venta'?'pos':''}">${fmt(f.total||0)}</div>
+        <button class="icon-btn" onclick="openFacEdit(${f.id})">✏️</button>
+        <button class="icon-btn del" onclick="deleteFactura(${f.id})">×</button>
+      </div>
+    </div>`).join('');
+}
+
+function openFacEdit(id){
+  const f=state.facturas.find(x=>x.id===id); if(!f) return;
+  document.getElementById('ef-id').value=id;
+  document.getElementById('ef-tipo').value=f.tipo;
+  document.getElementById('ef-folio').value=f.folio||'';
+  document.getElementById('ef-cliente').value=f.cliente||'';
+  document.getElementById('ef-neto').value=f.neto||'';
+  document.getElementById('ef-iva').value=f.iva||'';
+  document.getElementById('ef-total').value=f.total||'';
+  document.getElementById('ef-fecha').value=f.fecha||'';
+  document.getElementById('ef-estado').value=f.estado||'pendiente';
+  const jOpts='<option value="">— Sin trabajo —</option>'+state.jobs.map(j=>`<option value="${j.id}">${j.name}</option>`).join('');
+  document.getElementById('ef-job').innerHTML=jOpts;
+  document.getElementById('ef-job').value=f.jobId||'';
+  document.getElementById('edit-fac-overlay').classList.add('open');
+}
+function closeFacModal(){ document.getElementById('edit-fac-overlay').classList.remove('open'); }
+function saveFacEdit(){
+  const id=parseInt(document.getElementById('ef-id').value);
+  const f=state.facturas.find(x=>x.id===id); if(!f) return;
+  f.tipo=document.getElementById('ef-tipo').value;
+  f.folio=document.getElementById('ef-folio').value.trim();
+  f.cliente=document.getElementById('ef-cliente').value.trim();
+  f.neto=parseFloat(document.getElementById('ef-neto').value)||0;
+  f.iva=parseFloat(document.getElementById('ef-iva').value)||0;
+  f.total=parseFloat(document.getElementById('ef-total').value)||0;
+  f.fecha=document.getElementById('ef-fecha').value;
+  f.estado=document.getElementById('ef-estado').value;
+  const jobId=document.getElementById('ef-job').value;
+  const job=state.jobs.find(j=>sameId(j.id,jobId));
+  f.jobId=job?job.id:null; f.jobName=job?job.name:'';
+  save(); pushToSheets(); closeFacModal(); renderAll();
+}
+
+function deleteFactura(id){
+  if(!confirm('¿Eliminar factura?')) return;
+  state.facturas=state.facturas.filter(f=>f.id!==id);
+  save(); pushToSheets(); renderAll();
+}
+
+// ── IMPORTAR CSV DEFONTANA ──
+function importCSV(input){
+  const file = input.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e){
+    const text = e.target.result;
+    const lines = text.split(/\r?\n/).filter(l=>l.trim());
+    if(lines.length < 2){ document.getElementById('csv-preview').innerHTML='<div class="info-box" style="color:#c53030;background:#fff5f5">Archivo vacío o sin datos</div>'; return; }
+
+    // detectar separador
+    const sep = lines[0].includes(';') ? ';' : ',';
+    const headers = lines[0].split(sep).map(h=>h.trim().replace(/^"|"$/g,'').toLowerCase());
+
+    // mapear columnas comunes de Defontana
+    const col = (names) => {
+      for(const n of names){
+        const i = headers.findIndex(h=>h.includes(n));
+        if(i>=0) return i;
+      }
+      return -1;
+    };
+    const iRazon = col(['raz','cliente','receptor','proveedor']);
+    const iTotal = col(['total']);
+    const iNeto = col(['neto','monto neto','afecto']);
+    const iIVA = col(['iva','impuesto']);
+    const iFecha = col(['fecha']);
+    const iFolio = col(['folio','número','numero','n°','n ']);
+    const iTipo = col(['tipo']);
+
+    const rows = lines.slice(1).map(l=>{
+      const cells = l.split(sep).map(c=>c.trim().replace(/^"|"$/g,''));
+      return cells;
+    }).filter(r=>r.length>2);
+
+    if(!rows.length){ document.getElementById('csv-preview').innerHTML='<div class="info-box" style="color:#c53030;background:#fff5f5">No se encontraron filas de datos</div>'; return; }
+
+    // build preview
+    const preview = rows.slice(0,5).map(r=>`
+      <div style="font-size:11px;padding:4px 0;border-bottom:1px solid #f0f4f8">
+        ${iRazon>=0?r[iRazon]:''} | ${iFecha>=0?r[iFecha]:''} | ${iTotal>=0?r[iTotal]:iNeto>=0?r[iNeto]:'?'}
+      </div>`).join('');
+
+    document.getElementById('csv-preview').innerHTML=`
+      <div class="info-box green">Se detectaron ${rows.length} filas. Vista previa:</div>
+      <div style="margin-bottom:10px">${preview}</div>
+      <button class="btn purple sm" onclick="confirmImportCSV(${JSON.stringify(rows).replace(/</g,'&lt;')})">
+        Importar ${rows.length} facturas
+      </button>`;
+
+    // store rows globally for import
+    window.__csvRows = rows;
+    window.__csvCols = {iRazon,iTotal,iNeto,iIVA,iFecha,iFolio,iTipo};
+  };
+  reader.readAsText(file, 'utf-8');
+}
+
+function confirmImportCSV(){
+  const rows = window.__csvRows;
+  const {iRazon,iTotal,iNeto,iIVA,iFecha,iFolio,iTipo} = window.__csvCols;
+  if(!rows||!rows.length) return;
+
+  let imported = 0;
+  rows.forEach(r=>{
+    const cliente = iRazon>=0 ? r[iRazon] : 'Sin nombre';
+    const rawTotal = iTotal>=0 ? r[iTotal].replace(/\./g,'').replace(',','.') : '';
+    const rawNeto = iNeto>=0 ? r[iNeto].replace(/\./g,'').replace(',','.') : '';
+    const rawIva = iIVA>=0 ? r[iIVA].replace(/\./g,'').replace(',','.') : '';
+    const total = parseFloat(rawTotal)||0;
+    const neto = parseFloat(rawNeto)||Math.round(total/1.19);
+    const iva = parseFloat(rawIva)||Math.round(neto*0.19);
+    const fecha = iFecha>=0 ? parseDefontanaDate(r[iFecha]) : today();
+    const folio = iFolio>=0 ? r[iFolio] : '';
+    const tipoRaw = iTipo>=0 ? r[iTipo].toLowerCase() : '';
+    const tipo = tipoRaw.includes('compra')||tipoRaw.includes('proveedor') ? 'compra' : 'venta';
+    if(!cliente || (!total && !neto)) return;
+    state.facturas.push({id:Date.now()+imported, tipo, folio, cliente, neto, iva, total, fecha, estado:'pendiente', jobId:null, jobName:''});
+    imported++;
+  });
+
+  save(); pushToSheets(); renderAll();
+  document.getElementById('csv-preview').innerHTML<`<div class="info-box green">✅ ${imported} facturas importadas correctamente</div>`;
+  document.getElementById('csv-file').value='';
+  window.__csvRows=null;
+}
+
+function parseDefontanaDate(str){
+  if(!str) return today();
+  // DD/MM/YYYY o DD-MM-YYYY → YYYY-MM-DD
+  const m = str.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
+  if(m) return `${m[3]}-${m[2].padStart(2,'0')}-${m[1].padStart(2,'0')}`;
+  // YYYY-MM-DD ya está bien
+  if(/^\d{4}-\d{2}-\d{2}/.test(str)) return str.slice(0,10);
+  return today();
+}
+
+// ── TRABAJOS ──
 function addJob(){
   const name=document.getElementById('j-name').value.trim();
   const client=document.getElementById('j-client').value.trim();
@@ -429,18 +779,25 @@ function renderJobs(){
   const el=document.getElementById('jobs-list');
   if(!state.jobs.length){ el.innerHTML='<div class="card"><div class="empty">Sin trabajos — agrégalos arriba</div></div>'; return; }
   el.innerHTML=state.jobs.map(j=>{
-    const gastos=state.entries.filter(e=>e.jobId===j.id);
-    const total=gastos.reduce((s,e)=>s+e.amount,0);
+    const gastos=state.entries.filter(e=>sameId(e.jobId, j.id)); // ← fix: usa sameId
+    const facturas=state.facturas.filter(f=>sameId(f.jobId, j.id));
+    const totalGastos=gastos.reduce((s,e)=>s+e.amount,0);
+    const totalFacturado=facturas.filter(f=>f.tipo==='venta').reduce((s,f)=>s+(f.total||0),0);
+    const margen=totalFacturado-totalGastos;
     return `<div class="job-card">
       <div style="display:flex;justify-content:space-between;align-items:flex-start">
         <div><div class="job-title">${j.name}</div><div class="job-meta">${j.client?j.client+' · ':''}${j.date||''}</div></div>
         <div style="display:flex;gap:6px;align-items:center">
-          <div class="job-total">${fmt(total)}</div>
           <button class="icon-btn" onclick="openJobEdit(${j.id})">✏️</button>
           <button class="icon-btn del" onclick="deleteJob(${j.id})">×</button>
         </div>
       </div>
-      <div style="margin-top:6px;font-size:11px;color:#718096">${gastos.length} movimiento${gastos.length!==1?'s':''} asociado${gastos.length!==1?'s':''}</div>
+      <div style="display:flex;gap:10px;margin-top:8px;font-size:12px">
+        <span style="color:#c53030">Gastos: ${fmt(totalGastos)}</span>
+        ${totalFacturado?`<span style="color:#276749">Facturado: ${fmt(totalFacturado)}</span>`:''}
+        ${totalFacturado?`<span style="font-weight:700;color:${margen>=0?'#276749':'#c53030'}">Margen: ${fmt(margen)}</span>`:''}
+      </div>
+      <div style="margin-top:4px;font-size:11px;color:#718096">${gastos.length} gasto${gastos.length!==1?'s':''}${facturas.length?' · '+facturas.length+' factura'+(facturas.length!==1?'s':''):''}</div>
       ${gastos.length?`<div style="margin-top:8px;border-top:1px solid #f0f4f8;padding-top:8px">${gastos.slice(-3).reverse().map(e=>`
         <div style="display:flex;justify-content:space-between;font-size:11px;padding:2px 0">
           <span>${e.date} · ${e.worker} <span class="badge ${e.type}" style="font-size:9px">${lblType(e.type)}</span>${e.desc?' '+e.desc:''}</span>
@@ -452,7 +809,8 @@ function renderJobs(){
 
 function deleteJob(id){
   if(!confirm('¿Eliminar trabajo?')) return;
-  state.entries.forEach(e=>{ if(e.jobId===id){ delete e.jobId; delete e.jobName; }});
+  state.entries.forEach(e=>{ if(sameId(e.jobId,id)){ delete e.jobId; delete e.jobName; }});
+  state.facturas.forEach(f=>{ if(sameId(f.jobId,id)){ delete f.jobId; delete f.jobName; }});
   state.jobs=state.jobs.filter(j=>j.id!==id);
   save(); pushToSheets(); renderAll();
 }
@@ -472,10 +830,12 @@ function saveJobEdit(){
   j.name=document.getElementById('ej-name').value.trim();
   j.client=document.getElementById('ej-client').value.trim();
   j.date=document.getElementById('ej-date').value;
-  state.entries.forEach(e=>{ if(e.jobId===id) e.jobName=j.name; });
+  state.entries.forEach(e=>{ if(sameId(e.jobId,id)) e.jobName=j.name; });
+  state.facturas.forEach(f=>{ if(sameId(f.jobId,id)) f.jobName=j.name; });
   save(); pushToSheets(); closeJobModal(); renderAll();
 }
 
+// ── NÓMINA ──
 function renderWorkers(){
   const el=document.getElementById('workers-list');
   if(!state.workers.length){ el.innerHTML='<div class="card"><div class="empty">Agrega trabajadores en Config</div></div>'; return; }
@@ -487,9 +847,9 @@ function renderWorkers(){
     return `<div class="worker-card">
       <div class="worker-name">👷 ${w.name}</div>
       <div class="wrow"><span class="k">Sueldo base quincena</span><span class="v">${fmt(w.salary)}</span></div>
-      <div class=wrow"><span class="k">Adelantos</span><span class="v neg">-${fmt(adel)}</span></div>
+      <div class="wrow"><span class="k">Adelantos</span><span class="v neg">-${fmt(adel)}</span></div>
       <hr class="div">
-      <div class=wrow"><span class="k" style="font-weight:700">A pagar</span><span class="v ${apagar>=0?'pos':'neg'}" style="font-size:17px">${fmt(apagar)}</span></div>
+      <div class="wrow"><span class="k" style="font-weight:700">A pagar</span><span class="v ${apagar>=0?'pos':'neg'}" style="font-size:17px">${fmt(apagar)}</span></div>
       <hr class="div">
       <div class="wrow"><span class="k">Gastos empresa (no descuentan)</span><span class="v">${fmt(gastos)}</span></div>
     </div>`;
@@ -522,6 +882,7 @@ function deleteWorker(i){
   state.workers.splice(i,1); save(); pushToSheets(); renderAll();
 }
 
+// ── HISTORIAL ──
 function renderHistorial(){
   const wf=document.getElementById('h-worker')?.value||'';
   const tf=document.getElementById('h-type')?.value||'';
@@ -544,15 +905,17 @@ function renderHistorial(){
     </div>`).join('');
 }
 
+// ── SELECTS ──
 function populateSelects(){
   const wOpts=state.workers.map(w=>`<option value="${w.name}">${w.name}</option>`).join('')||'<option>Agrega trabajadores en Config</option>';
   const jOpts='<option value="">— Sin trabajo —</option>'+state.jobs.map(j=>`<option value="${j.id}">${j.name}</option>`).join('');
   const hwOpts='<option value="">Todos</option>'+state.workers.map(w=>`<option value="${w.name}">${w.name}</option>`).join('');
   ['f-worker','e-worker'].forEach(id=>{ const el=document.getElementById(id); if(el) el.innerHTML=wOpts; });
-  ['f-job','e-job'].forEach(id=>{ const el=document.getElementById(id); if(el) el.innerHTML=jOpts; });
+  ['f-job','e-job','fac-job'].forEach(id=>{ const el=document.getElementById(id); if(el) el.innerHTML=jOpts; });
   const hw=document.getElementById('h-worker'); if(hw) hw.innerHTML=hwOpts;
 }
 
+// ── GUARDAR MOVIMIENTO ──
 function saveEntry(){
   const worker=document.getElementById('f-worker').value;
   const type=document.getElementById('f-type').value;
@@ -563,12 +926,13 @@ function saveEntry(){
   if(!worker) return alert('Agrega un trabajador en Config primero');
   if(!amount||amount<=0) return alert('Ingresa un monto válido');
   if(!state.activePeriod) return alert('Selecciona una quincena');
-  const job=state.jobs.find(j=>j.id==jobId);
-  state.entries.push({id:Date.now(),worker,type,desc,amount,jobId:job?job.id:null,jobName:job?job.name:'',date,period:state.activePeriod});
+  const job=state.jobs.find(j=>sameId(j.id,jobId));
+  state.entries.push({id:Date.now(),worker,type,desc,amount,jobId:job?Number(job.id):null,jobName:job?job.name:'',date,period:state.activePeriod});
   document.getElementById('f-amount').value=''; document.getElementById('f-desc').value='';
   save(); pushToSheets(); alert('✅ Guardado'); renderAll();
 }
 
+// ── EDITAR MOVIMIENTO ──
 function openEdit(id){
   const e=state.entries.find(x=>x.id===id); if(!e) return;
   populateSelects();
@@ -590,8 +954,8 @@ function saveEdit(){
   e.desc=document.getElementById('e-desc').value.trim();
   e.amount=parseFloat(document.getElementById('e-amount').value);
   const jobId=document.getElementById('e-job').value;
-  const job=state.jobs.find(j=>j.id==jobId);
-  e.jobId=job?job.id:null; e.jobName=job?job.name:'';
+  const job=state.jobs.find(j=>sameId(j.id,jobId));
+  e.jobId=job?Number(job.id):null; e.jobName=job?job.name:'';
   e.date=document.getElementById('e-date').value;
   save(); pushToSheets(); closeModal(); renderAll();
 }
@@ -604,7 +968,7 @@ function deleteEntry(id){
 
 function resetAll(){
   if(!confirm('¿Borrar TODOS los datos?')) return;
-  state={workers:[],periods:[],activePeriod:null,entries:[],jobs:[]};
+  state={workers:[],periods:[],activePeriod:null,entries:[],jobs:[],facturas:[]};
   save(); pushToSheets(); renderAll();
 }
 
